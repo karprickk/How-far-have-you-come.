@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: black; /* Black background */
+    color: white; /* White text for contrast */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-top: 250px;
+}
+
+h1 {
+    font-size: 2em;
+    color: white; /* White text for the heading */
+}
+
+h2 {
+    margin-top: 500px; 
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: white; /* White text for the heading */
+}
+h3 {
+    margin-top: 20px; 
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: white; /* White text for the heading */
+}
+h4 {
+    margin-top: 400px;
+    font-size: 5em;
+    color: white; /* White text for the heading */
+}
+
+img {
+    max-width: 30%;
+    height: auto;
+    margin-top: 20px;
+}
+
+.happiness-bar {
+    margin-top: 10px; 
+    text-align: center;
+    width: 80%; /* Relative width */
+    margin-left: auto; /* Center the bar horizontally */
+    margin-right: auto;
+}
+
+.happiness-bar label {
+    font-size: 1.2em;
+    color: rgb(255, 255, 255);
+}
+
+.happiness-bar input[type="range"] {
+    width: 450px; /* Width of the slider */
+    margin-top: 10px; /* Space between label and slider */
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+    background: transparent; /* Make the track transparent */
+}
+
+.happiness-bar input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 15px; /* Height of the track */
+    background: #000000; /* Light gray track */
+    border-radius: 10px; /* Sharp corners */
+    border: 2px solid white;
+}
+
+.happiness-bar input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background: black; /* Black thumb */
+    border: 2px solid white; /* White border for contrast */
+    border-radius: 10px; /* Sharp corners */
+    cursor: pointer;
+    margin-top: -4px; /* Center the thumb vertically */
+}
+
+.happiness-bar input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 0px;
+}
+
+#happiness-value {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: white; /* White text for contrast */
+    font-weight: bold;
+}
+
+.happiness-bar input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.happiness-bar input[type="range"]::-ms-track {
+    width: 100%;
+    height: 20px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+.happiness-bar input[type="range"]::-ms-fill-lower {
+    background: #e0e0e0;
+    border-radius: 0px;
+}
+
+.happiness-bar input[type="range"]::-ms-fill-upper {
+    background: #e0e0e0;
+    border-radius: 0px;
+}
+
+.happiness-bar input[type="range"]::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: rgb(255, 255, 255);
+    border: 2px solid white;
+    border-radius: 0px;
+    cursor: pointer;
+    margin-top: 0; /* Adjust if needed */
+}
+
+.happiness-bar button {
+    margin-bottom: 250px;
+    margin-top: 20px; /* Add space between slider and button */
+    padding: 7px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #000000; /* Black button */
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 0px;
+    color: white;
+    font-weight: bold
+}
+
+.progress-bar-container {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.progress-bar {
+    width: 50%;
+    height: 30px;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #000000; /* Black background */
+    overflow: hidden;
+    position: relative;
+    border-radius: 0px 0 0px 0; /* Top-left and top-right rounded, bottom corners sharp */
+}
+
+#year-progress {
+    height: 100%;
+    background-color: #ffffff; /* White progress fill */
+    border-radius: 0px;
+    transition: width 0.5s ease;
+}
+
+#progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    color: #ffffff; /* White text for contrast */
+    font-weight: bold;
+}

@@ -3,90 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIMYM</title>
-    <style>
-        /* Set the background to black */
-        body {
-            background-color: black;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* Add glowing neon pink effect to all text */
-        h1, #time-difference {
-            color: #ff00ff; /* Neon pink color */
-            font-weight: normal;
-            text-shadow: 0 0 1px #ff00ff, 0 0 2px #ff00ff, 0 0 4px #ff00ff, 0 0 8px #ff00ff;
-        }
-
-        /* Style for the time difference text */
-        #time-difference {
-            font-size: 30px;
-            margin-top: 5px;
-        }
-
-        #bottom-text {
-        font-size: 20px; /* Smaller size */
-        color: #ff00ff; /* Same neon pink color */
-        text-shadow: 0 0 1px #ff00ff, 0 0 2px #ff00ff, 0 0 4px #ff00ff, 0 0 8px #ff00ff;/* Same glow effect */
-        margin-top: 30px; /* Add some spacing */
-        }
-        #heart {
-        font-size: 32px; /* Adjust size as needed */
-        color: #ff00ff; /* Same neon pink color */
-        text-shadow: 0 0 1px #ff00ff, 0 0 2px #ff00ff, 0 0 4px #ff00ff, 0 0 8px #ff00ff;
-        margin-top: 10px; /* Add some spacing */
-        }
-        #corner-text {
-        position: absolute; /* Positions the text absolutely */
-        bottom: 10px; /* Distance from the bottom */
-        right: 10px; /* Distance from the right */
-        font-size: 7px; /* Smaller font size */
-        color: #ff00ff; /* Neon pink color */
-        text-shadow: 0 0 1px #ff00ff, 0 0 1px #ff00ff, 0 0 1px #ff00ff, 0 0 1px #ff00ff;/* Glow effect */
-        }
-    </style>
+    <title>How far have you come.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Met the mother to my kids before...</h1>
-    <div id="time-difference">Calculating...</div>
-    <p id="bottom-text">I Love you Amulya</p>
-    <div id="heart">&#10084;</div>
-    <div id="corner-text">-Your Husband, karthik.</div>
-    <!-- Add your image here -->
+    <div class="container">
+        <h1>You have got <span id="days"></span> days <span id="hours"></span> hours <span id="minutes"></span> minutes <span id="seconds"></span> seconds till the end of the year.</h1>
+        
+        <!-- Year Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div id="year-progress" style="width: 0%;"><span id="progress-text">0%</span></div>
+            </div>
+        </div>
+
+        <h4>Make it count.</h4>
+
+        <!-- Happiness Index Section -->
+        <div class="happiness-bar">
+            <h2>How satisfied are you with yourself?</h2> <!-- Heading for happiness index -->
+            <input type="range" id="happiness" name="happiness" min="0" max="100" value="{{ happiness_index }}">
+            <br>
+            <button onclick="updateHappiness()">Satisfied</button>
+            <br>
+            <h3>You are <span id="happiness-value">50</span>% satisfied.</h3> <!-- Display the happiness value -->
+        </div>        
+    </div>
 
     <script>
-        // Get the start date from Flask
-        const startDate = new Date("{{ start_date }}");
-
-        // Function to calculate and update the time difference
-        function updateTimeDifference() {
-            const now = new Date();
-            const timeDifference = now - startDate;
-
-            // Calculate days, hours, minutes, and seconds
-            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-            // Display the time difference
-            document.getElementById("time-difference").innerText =
-                `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        function updateTime() {
+            fetch('/get_time')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('days').textContent = data.days;
+                    document.getElementById('hours').textContent = data.hours;
+                    document.getElementById('minutes').textContent = data.minutes;
+                    document.getElementById('seconds').textContent = data.seconds;
+                });
         }
 
-        // Update the time difference every second
-        setInterval(updateTimeDifference, 1000);
+        function updateHappiness() {
+            const happinessIndex = document.getElementById('happiness').value;
+            fetch('/update_happiness', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ happiness_index: happinessIndex }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Happiness index updated successfully!');
+                }
+            });
+        }
 
-        // Initial call to display the time difference immediately
-        updateTimeDifference();
+        // Function to update the happiness value text
+function updateHappinessValue() {
+    const happinessSlider = document.getElementById('happiness');
+    const happinessValue = document.getElementById('happiness-value');
+    happinessValue.textContent = happinessSlider.value; // Update the displayed value
+}
+
+// Update the happiness value text when the slider is moved
+document.getElementById('happiness').addEventListener('input', updateHappinessValue);
+
+// Function to update the happiness index on the server
+function updateHappiness() {
+    const happinessIndex = document.getElementById('happiness').value;
+    fetch('/update_happiness', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ happiness_index: happinessIndex }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Happiness index updated successfully!');
+            updateHappinessValue(); // Update the displayed value after successful update
+        }
+    });
+}
+
+// Initial call to set the happiness value text
+updateHappinessValue();
+
+        function updateYearProgress() {
+            fetch('/get_year_progress')
+                .then(response => response.json())
+                .then(data => {
+                    const progress = data.progress.toFixed(0); // Round to 2 decimal places
+                    document.getElementById('year-progress').style.width = `${progress}%`;
+                    document.getElementById('progress-text').textContent = `${progress}%`;
+                });
+        }
+
+        setInterval(updateTime, 1000); // Update every second
+        setInterval(updateYearProgress, 1000); // Update every second
+        updateTime(); // Initial call to display time immediately
+        updateYearProgress(); // Initial call to display progress immediately
     </script>
 </body>
 </html>
